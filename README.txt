@@ -61,28 +61,45 @@ Assignment 1
 ~~ set2.pcap ~~
 10. How many packets are there in this set?
 
+	77,982 packets
 
 11. How many plaintext username-password pairs are there in this packet set?
     Please count any anonymous or generic accounts.
 
+	Just one - account 'larry@rasdot.com'
+
 
 12. Briefly descripbe how you found the username-password pairs.
+
+	Use ettercap to parse the pcap file, then grep for "PASS"
+	in the results (ettercap -T -r set2.pcap | grep "PASS")
+	Note - I also ran with grep -i "PASS" but I got a lot of
+	HTML with forms/elements named 'password' and I didn't
+	find any other password-looking things.
 
 
 13. For each of the plaintext username-password pair that you found, identify
     the protocol used, server IP, the corresponding domain name
     (e.g. google.com), and port number
 
+	protocol: IMAP
+	server:   87.120.13.118
+	domain:	  neterra.net
+	port:     143 
+
 
 14. Of all the plaintext username-password pairs that you found, how
     many of them are legitimate? That is, the username-password was valid,
     access successfully granted?
 
+	The 'larry@rasdot.com' account was legitimate - I could see
+	some of Larry's emails.
 
 
 ~~ set3.pcap ~~
 15. How many plaintext username-password pairs are there in this packet set?
     Please count any anonymous or generic accounts.
+
 
 
 16. For each of the plaintext username-password pair that you found, identify
