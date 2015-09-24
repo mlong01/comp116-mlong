@@ -141,6 +141,11 @@ Assignment 1
     (hostname + domain name) that are in this PCAP set. Describe
     your methodology.
 
+	In Wireshark under the Statistics menu, there's an option called
+	'Address Resolution' that produces plaintext mapping IPs to 
+	domains - I copied and pasted the contents into a file called
+	iplist.txt	
+
 
 ~~ General Questions ~~
 19. How did you verify the successful username-password pairs?
