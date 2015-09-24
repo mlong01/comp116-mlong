@@ -100,16 +100,41 @@ Assignment 1
 15. How many plaintext username-password pairs are there in this packet set?
     Please count any anonymous or generic accounts.
 
-
+	THERE ARE THREE - hidden inside the Seymore Butts accounts, I found
+	one with a username nab01620@nifty.com and one with a username jeff.
+	I search/replace'd all 580 of the 'USER: seymore' strings with something
+	else, then searched USER: and found those other two.
 
 16. For each of the plaintext username-password pair that you found, identify
     the protocol used, server IP, the corresponding domain name
     (e.g. google.com), and port number
 
+	seymore:
+		protocol: HTTP
+		server:   162.222.171.208
+		domain:	  forum.defcon.org
+		port:     80
+
+	nifty:
+		protocol: IMAP
+		server:   210.131.4.155
+		domain:	  nifty.ad.jp
+		port:     143
+
+	jeff:
+		protocol: HTTP
+		server:   54.191.109.23
+		domain:	  intelctf.com
+		port:     80
+
 
 17. Of all the plaintext username-password pairs that you found, how
     many of them are legitimate? That is, the username-password was valid,
     access successfully granted?
+
+	seymore was not legitimate - they kept getting 403 forbidden.
+	nab01620 was legitimate - they hit email
+	jeff was legitimate - they got 200 in response
 
 
 18. Provide a listing of all IP addresses with corresponding hosts
@@ -120,8 +145,19 @@ Assignment 1
 ~~ General Questions ~~
 19. How did you verify the successful username-password pairs?
 
+	I logged into the accounts just kidding I followed their TCP 
+	streams in Wireshark to see what kind of responses they were
+	getting from the servers. Granted, I know that positive responses
+	don't always mean legitimate accounts (I heard your goatse story)
+	but that's as far as I was willing to dig. 
+
 
 20. What advice would you give to the owners of the username-password
     pairs that you found so their account information would not be revealed
     "in-the-clear" in the future?
+
+	Make sure whatever site you're using is using HTTPS instead of
+	HTTP, and also using a VPN through a network that isn't being
+	sniffed (or is less likely to be sniffed) could make you safer.
+
 
