@@ -64,15 +64,17 @@ if ARGV.length == 2 then
 
 elsif ARGV.length == 0 then
 
+	nmap_regex = /\x4E\x6D\x61\x70/
+	nikto_regex = /\x4E\x69\x6B\x74\x6F/
+
 	pkts = PacketFu::Capture.new(:start => true, :iface => 'eth0', :promisc => true)
 	incidents = 0
 
 	pkts.stream.each do |p|
 		pkt = PacketFu::Packet.parse(p)
-		
+	
 		if pkt.is_ip? then
 			if pkt.is_tcp? then
-				puts "Payload: " + pkt.payload
 				if pkt.tcp_flags.to_i() == NULL_FLAGS then
 					print_incident(incidents, "NULL Scan", pkt.ip_saddr, "TCP", pkt.payload())
 					incidents += 1
@@ -84,6 +86,12 @@ elsif ARGV.length == 0 then
 					incidents += 1
 				end		
 			end
+		elsif pkt.payload.match(nmap_regex) then
+			print_incident(incidents, "General NMAP Scan", pkt.ip_saddr, "TCP", pkt.payload())
+			incidents += 1
+		elsif pkt.payload.match(nikto_regex) then		
+			print_incident(incidents, "Nikto Scan", pkt.ip_saddr, "TCP", pkt.payload())
+			incidents += 1
 		end
 	end
 else
