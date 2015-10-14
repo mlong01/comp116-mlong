@@ -22,12 +22,12 @@ if ARGV.length == 2 then
 		in_quotes_regex = "([\"'])(.*?)([\"'])"
 		ip_regex = "\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"
 		
-		nmap_regex = "(?i)nmap(?-i)"		# case-insensitive 'nmap'
-		nikto_regex = "(?i)nikto(?-i)"		# case-insensitive 'nikto'
-		masscan_regex = "(?i)masscan(?-i)"	# case-insensitive 'masscan'
-		shellshock_regex = "\(\) *{ *:; *} *;"	# space-ignorant '() { :; } ;'
-		php_regex = "(?i)phpMyAdmin(?-i)"	# case-insensitive 'phpmyadmin'
-		shell_code_regex = "\\x.{2,}"		# \x followed by 2 or more chars
+		nmap_regex = /(?i)nmap(?-i)/		# case-insensitive 'nmap'
+		nikto_regex = /(?i)nikto(?-i)/		# case-insensitive 'nikto'
+		masscan_regex = /(?i)masscan(?-i)/	# case-insensitive 'masscan'
+		shellshock_regex = /\(\) *{ *:; *} *;/	# space-ignorant '() { :; } ;'
+		php_regex = /(?i)phpMyAdmin(?-i)/	# case-insensitive 'phpmyadmin'
+		shell_code_regex = /\\x.{2,}/		# \x followed by 2 or more chars
 
 
 		logfile = File.new(ARGV[1], "r")
@@ -37,20 +37,25 @@ if ARGV.length == 2 then
 			prot = "HTTP"
 			payload = line.match(in_quotes_regex) #Only matches first set of quotes
 
-			if line.match(masscan_regex) then
-				puts "nmap: " + payload.to_s()
+			if line.match(nmap_regex) then
+				print_incident(incidents, "Nmap scan", src_ip, prot, payload)
+				incidents += 1
+			elsif line.match(nikto_regex) then
+				print_incident(incidents, "Nikto scan", src_ip, prot, payload)
+				incidents += 1
+			elsif line.match(masscan_regex) then
+				print_incident(incidents, "masscan attack", src_ip, prot, payload)
+				incidents += 1
+			elsif line.match(shellshock_regex) then
+				print_incident(incidents, "Shellshock attack", src_ip, prot, payload)
+				incidents += 1
+			elsif line.match(php_regex) then
+				print_incident(incidents, "phpMyAdmin stuff", src_ip, prot, payload)
+				incidents += 1
+			elsif line.match(php_regex) then
+				print_incident(incidents, "Possible shell code", src_ip, prot, payload)
+				incidents += 1
 			end
-
-#			if line.match(nmap_regex) then
-#				print_incident(incidents, "Nmap detected", src_ip, prot, payload)
-#				incidents += 1
-#			elsif line.match(nikto_regex) then
-#				print_incident(incidents, "Nikto detected", src_ip, prot, payload)
-#				incidents += 1
-#			elsif line.match(php_regex) then
-#				print_incident(incidents, "phpMyAdmin stuff detected", src_ip, prot, payload)
-#				incidents += 1
-#			end
 
 
 		end
