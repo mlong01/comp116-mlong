@@ -66,6 +66,7 @@ elsif ARGV.length == 0 then
 
 	nmap_regex = /\x4E\x6D\x61\x70/
 	nikto_regex = /\x4E\x69\x6B\x74\x6F/
+	cc_regex = /[3,4,5,6]\d{3}[\ ,-]{0,1}\d{4}[\ ,-]{0,1}\d{4}[\ ,-]{0,1}\d{4}[\ ,-]{0,1}/
 
 	pkts = PacketFu::Capture.new(:start => true, :iface => 'eth0', :promisc => true)
 	incidents = 0
@@ -92,7 +93,11 @@ elsif ARGV.length == 0 then
 		elsif pkt.payload.match(nikto_regex) then		
 			print_incident(incidents, "Nikto Scan", pkt.ip_saddr, "TCP", pkt.payload())
 			incidents += 1
+		elsif pkt.payload.match(cc_regex) then
+			print_incident(incidents, "Credit Cart # in the clear", pkt.ip_saddr, "TCP", pkt.payload())
+			incidents += 1
 		end
+		
 	end
 else
 	puts "USAGE: ruby alarm.rb [-r] [log_file]"
