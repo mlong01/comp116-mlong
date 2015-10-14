@@ -19,8 +19,8 @@ if ARGV.length == 2 then
 	else
 		incidents = 0
 
-		in_quotes_regex = "([\"'])(.*?)([\"'])"
-		ip_regex = "\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"
+		in_quotes_regex = /(["'])(?:(?=(\\?))\2.)*?\1/
+		ip_regex = /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/
 		
 		nmap_regex = /(?i)nmap(?-i)/		# case-insensitive 'nmap'
 		nikto_regex = /(?i)nikto(?-i)/		# case-insensitive 'nikto'
@@ -35,7 +35,7 @@ if ARGV.length == 2 then
 		while line = logfile.gets
 			src_ip = line.match(ip_regex)
 			prot = "HTTP"
-			payload = line.match(in_quotes_regex) #Only matches first set of quotes
+			payload = line.match(in_quotes_regex).to_a() #Only matches first set of quotes
 
 			if line.match(nmap_regex) then
 				print_incident(incidents, "Nmap scan", src_ip, prot, payload)
