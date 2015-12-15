@@ -1,20 +1,19 @@
 import shodan
-import sys
+import os, sys
 
 def init():
     API_KEY = raw_input("Please enter API key: ")
 
     api = shodan.Shodan(API_KEY)
-        
+    
+    os.system('clear')
+    
     try:
         info = api.info()
     except:
         print("Invalid API key")
         exit()
 
-    print "Query credits: %s" % info['query_credits']
-    print "Scan credits: %s" % info['scan_credits']
-    
     result = main(api, None)
 
     while True:
@@ -23,7 +22,13 @@ def init():
 
 
 def main(api, command):
+    os.system('clear')
+
     if not command:
+        user_info = api.info()
+        print "Query credits: %s" % user_info['query_credits']
+        print "Scan credits: %s" % user_info['scan_credits']
+    
         command = raw_input("What would you like do to?\n" +
                             "'s' -> search\n" +
                             "'i' -> info about Shodan\n" +
@@ -52,6 +57,7 @@ def search(api):
 
 
 def info(api):
+    os.system('clear')
     command = raw_input("What would you like to learn more about?\n" +
                         "'p' -> ports Shodan crawls\n" +
                         "'r' -> protocols Shodan scanning API supports\n" +
