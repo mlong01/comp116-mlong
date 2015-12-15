@@ -13,6 +13,8 @@ tool that walks you through the library's functionality. Right now, only the
 Also, there's no requirements.txt, so the user has to 'easy_install shodan' 
 to make the program work.
 
-As it is now 6:00, I am submitting all that I have completed right now. I want
-to work more on the interactive Shodan tool, but I'll do that on a different
-branch. What you see in master is what I have finished at 6:00
+Welcome to the dev branch - here's what I want to add to the tool:
+    * search functionality (because that's what the tool's all about)
+    * actionable things to do when results are returned
+    * export to file functionality (does this break API rules?)
+    * anything else I have labeled as TODO in the comments
